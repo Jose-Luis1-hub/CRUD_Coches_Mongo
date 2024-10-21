@@ -100,19 +100,22 @@ public class CocheController implements Initializable {
 
     @FXML
     void onInsertarButtonClick(ActionEvent event) {
-        if (matriculaID.getText().isEmpty() || modeloID.getText().isEmpty() || marcaID.getText().isEmpty() || tipoID.getValue().isEmpty()) {
+        if (matriculaID.getText().isEmpty() || modeloID.getText().isEmpty() || marcaID.getText().isEmpty() || tipoID.getValue() == null) {
             Alerta.Error("Completa todos los campos");
         } else {
             String matricula = matriculaID.getText();
-            String modelo = modeloID.getText();
-            String marca = marcaID.getText();
-            String tipo = tipoID.getValue();
-            Coche coche = new Coche(matricula, modelo, marca, tipo);
-            cocheCRUD.insertarCoche(coche);
-            limpiarCampos();
+            if(cocheCRUD.comprobarMatricula(matricula)) {
+                Alerta.Error("La matricula ya existe");
+            } else {
+                String modelo = modeloID.getText();
+                String marca = marcaID.getText();
+                String tipo = tipoID.getValue();
+                Coche coche = new Coche(matricula, modelo, marca, tipo);
+                cocheCRUD.insertarCoche(coche);
+                limpiarCampos();
+            }
         }
         cargarCoches();
-        limpiarCampos();
     }
 
     public void cargarCoches() {

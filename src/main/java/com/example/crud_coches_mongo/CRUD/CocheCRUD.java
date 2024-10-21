@@ -63,4 +63,15 @@ public class CocheCRUD {
         Document doc = new Document("marca", coche.getMarca()).append("tipo", coche.getTipo()).append("modelo", coche.getModelo());
         collection.updateOne(Filters.eq("matricula", coche.getMatricula()), new Document("$set", doc));
     }
+
+    public boolean comprobarMatricula(String matricula) {
+        Boolean existe = false;
+        ArrayList<Coche> listadoCoches = obtenerCoches();
+        for (Coche coche : listadoCoches) {
+            if (coche.getMatricula().equals(matricula)) {
+                existe = true;
+            }
+        }
+        return existe;
+    }
 }
